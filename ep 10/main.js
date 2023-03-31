@@ -5,10 +5,14 @@ window.onload = function(){
     height = canvas.height = window.innerHeight,
     ship = particle.create(width/2, height/2, 0, 0,0),
     thrush = vector.create(0, 0),
+    backward = vector.create(0, 0),
     angle = 0,
     turningLeft = false,
     turningRight = false,
-    thrusting = false;
+    thrusting = false,
+    bullets = [],
+    back = false,
+    fire = false;
 
     update();
 
@@ -23,6 +27,12 @@ window.onload = function(){
                 break;
             case 39: // right
                 turningRight = true;
+                break;
+            case 40: // back
+                back = true;
+                break;
+            case 32:
+                fire = true;
                 break;
             default:
                 break;
@@ -41,6 +51,12 @@ window.onload = function(){
             case 39: // right
                 turningRight = false;
                 break;
+            case 40: // back
+                back = false;
+                break;
+            case 32:
+                fire = false;
+                break;
             default:
                 break;
         }
@@ -55,7 +71,7 @@ window.onload = function(){
         if (turningRight){
             angle += 0.05;
         }
-
+        backward.setAngle(angle);
         thrush.setAngle(angle);
         if (thrusting){
             thrush.setLength(0.1);
@@ -63,9 +79,14 @@ window.onload = function(){
             thrush.setLength(0);
         }
 
-        ship.accelerate(thrush);
-        ship.update();
+        if (back){
+            backward.setLength(-0.1);
+        }else{
+            backward.setLength(0);
+        }
 
+        ship.accelerate(thrush.add(backward));
+        ship.update();
         context.save();
         context.translate(ship.position.getX(), ship.position.getY());
         context.rotate(angle);
@@ -75,12 +96,30 @@ window.onload = function(){
         context.lineTo(-10, -7);
         context.lineTo(-10, 7);
         context.lineTo(10, 0);
+        context.moveTo(10, 0);
+        context.lineTo(10 + Math.cos(-angle)*20, 0+ Math.sin(angle)*20);
         if (thrusting){
             context.moveTo(-10, 0);
             context.lineTo(-18, 0);
         }
         context.stroke();
         context.restore();
+
+        if (bullets != []){
+            bullets.map((b)=>{
+                b.update()
+                context.beginPath();
+                context.arc(b.position.getX(), b.position.getY(), 2, 0, Math.PI*2, false);
+                context.fill();
+            });
+        }
+        
+        if (fire){
+            // context.moveTo(10, 0);
+            // context.lineTo(100, 0);
+            bullets.push(bullet.create(ship.position.getX(), ship.position.getY(), 2.5, angle));
+        }
+
 
         // context.beginPath();
         // context.arc(ship.position.getX(), ship.position.getY(), 10,
