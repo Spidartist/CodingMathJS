@@ -97,13 +97,21 @@ window.onload = function(){
         context.lineTo(-10, 7);
         context.lineTo(10, 0);
         context.moveTo(10, 0);
-        context.lineTo(10 + Math.cos(-angle)*20, 0+ Math.sin(angle)*20);
+        context.lineTo(10 + Math.cos(angle)*20, 0+ Math.sin(angle)*20);
         if (thrusting){
             context.moveTo(-10, 0);
             context.lineTo(-18, 0);
         }
         context.stroke();
+        context.arc(0, 0, 2, 0, 2* Math.PI, false);
+        context.fill();
         context.restore();
+
+        if (fire){
+            // context.moveTo(10, 0);
+            // context.lineTo(100, 0);
+            bullets.push(bullet.create(ship.position.getX(), ship.position.getY(), 2.5, angle));
+        }
 
         if (bullets != []){
             bullets.map((b)=>{
@@ -114,11 +122,7 @@ window.onload = function(){
             });
         }
         
-        if (fire){
-            // context.moveTo(10, 0);
-            // context.lineTo(100, 0);
-            bullets.push(bullet.create(ship.position.getX(), ship.position.getY(), 2.5, angle));
-        }
+        
 
 
         // context.beginPath();
