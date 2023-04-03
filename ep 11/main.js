@@ -5,14 +5,13 @@ window.onload = function(){
     height = canvas.height = window.innerHeight,
     sun = particle.create(width/2, height/2, 0, 0),
     planet = particle.create(width/2 + 200, height/2, 10, -Math.PI/2);
-    planet1 = particle.create(width/2 , height/2 + 200, 10, -Math.PI/2);
 
     sun.mass = 20000;
 
     update();
 
     function update(){
-        context.clearRect(0, 0, width, height);
+        // context.clearRect(0, 0, width, height);
         
         planet.gravitateTo(sun);
         planet.update();

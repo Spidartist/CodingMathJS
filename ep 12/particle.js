@@ -4,7 +4,6 @@ var particle = {
 	gravity:null,
 	mass: 1,
 	radius: 0,
-	bounce: -1,
 
 	create: function(x, y, speed, direction, grav) {
 		var obj = Object.create(this);
@@ -33,7 +32,8 @@ var particle = {
 	distanceTo: function(p2){
 		var dx = p2.position.getX() - this.position.getX(),
 			dy = p2.position.getY() - this.position.getY();
-		return Math.sqrt(dx*dx + dy*dy);
+		
+			return Math.sqrt(dx*dx + dy*dy);
 	},
 
 	// create at 0, 0 may cause error when set angle before set length
