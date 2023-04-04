@@ -49,7 +49,24 @@ var utils = {
     },
 
     rectIntersect: function(r0, r1){
-        
-    }
+        return utils.rangeIntersect(r0.x, r0.x + r0.width, r1.x, r1.x + r1.width)
+            && utils.rangeIntersect(r0.y, r0.y + r0.height, r1.y, r1.y + r1.height);
+    },
+
+	degreesToRads: function(degrees) {
+		return degrees / 180 * Math.PI;
+	},
+
+	radsToDegrees: function(radians) {
+		return radians * 180 / Math.PI;
+	},
+
+	randomRange: function(min, max) {
+		return min + Math.random() * (max - min);
+	},
+
+	randomInt: function(min, max) {
+		return Math.floor(min + Math.random() * (max - min + 1));
+	}
 
 }
