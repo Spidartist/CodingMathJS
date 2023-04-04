@@ -42,4 +42,5 @@ var utils = {
     inRange: function(value, min, max){
         return value >= Math.min(min, max) && value <= Math.max(min, max);
     }
+    
 }
