@@ -41,6 +41,15 @@ var utils = {
 
     inRange: function(value, min, max){
         return value >= Math.min(min, max) && value <= Math.max(min, max);
+    },
+
+    rangeIntersect: function(min0, max0, min1, max1){
+        return Math.max(min0, max0) >= Math.min(min1, max1) 
+            && Math.min(min0, max0) <= Math.max(min1, max1);
+    },
+
+    rectIntersect: function(r0, r1){
+        
     }
-    
+
 }
