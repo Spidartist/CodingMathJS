@@ -35,6 +35,10 @@ var utils = {
         return utils.distanceXY(x, y, circle.x, circle.y) < circle.radius;
     },
 
+	particlePointCollision: function(x, y, p){
+        return utils.distanceXY(x, y, p.position.getX(), p.position.getY()) < p.radius;
+    },
+
     pointInRect: function(x, y, rect){
         return utils.inRange(x, rect.x, rect.x + rect.width) && utils.inRange(y, rect.y, rect.y + rect.height);
     },
