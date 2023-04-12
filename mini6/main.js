@@ -4,6 +4,10 @@ window.onload = function(){
     width = canvas.width = window.innerWidth,
     height = canvas.height = window.innerHeight;
 
+    function randomInt(min, max){
+        return Math.floor(min + Math.random() * (max - min +1));
+    }
+
     function randomRange(min, max){
         return min + Math.random() * (max - min);
     }
