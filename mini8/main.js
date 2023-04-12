@@ -21,6 +21,7 @@ window.onload = function(){
 
     function drawGrid(){
         context.beginPath();
+        
         context.strokeStyle = "#ccc";
         for (var x = 0; x <= width; x += gridSize){
             context.moveTo(x, 0);
