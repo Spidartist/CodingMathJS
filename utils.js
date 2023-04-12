@@ -71,6 +71,15 @@ var utils = {
 
 	randomInt: function(min, max) {
 		return Math.floor(min + Math.random() * (max - min + 1));
+	},
+
+	randomDist: function(min, max, iterations){
+		var total = 0;
+
+		for (var i=0; i < iterations; i+=1){
+			total += utils.randomRange(min, max);
+		}
+		return total / iterations;
 	}
 
 }

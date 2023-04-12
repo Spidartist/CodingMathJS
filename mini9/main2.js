@@ -18,9 +18,12 @@ window.onload = function(){
     }
 
     function addResult(){
-        var r1 = utils.randomRange(0, 100),
-            r0 = utils.randomRange(0, 100),
-            result = Math.floor((r0 + r1) / 2);
+        var iterations = 3,
+            total = 0;
+        for (var i = 0; i< iterations;i+=1){
+            total += utils.randomRange(0, 100);
+        }
+        var result = Math.floor(total / iterations);
         results[result] += 1;
     }
 
