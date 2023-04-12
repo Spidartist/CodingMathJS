@@ -3,6 +3,45 @@ window.onload = function(){
     context = canvas.getContext("2d"),
     width = canvas.width = window.innerWidth,
     height = canvas.height = window.innerHeight,
-    centerX = width/2,
-    centerY = height/2;
+    gridSize = 40;
+
+    drawGrid();
+
+    document.body.addEventListener("mousemove", function(event){
+        context.clearRect(0, 0, width, height);
+        drawGrid();
+
+        var x = roundNearest(event.clientX, gridSize),
+            y = roundNearest(event.clientY, gridSize);
+
+        context.beginPath();
+        context.arc(x, y, 20, 0, Math.PI * 2, false);
+        context.fill();
+    });
+
+    function drawGrid(){
+        context.beginPath();
+        context.strokeStyle = "#ccc";
+        for (var x = 0; x <= width; x += gridSize){
+            context.moveTo(x, 0);
+            context.lineTo(x, height);
+        }
+
+        for (var y = 0; y <= height; y += gridSize){
+            context.moveTo(0, y);
+            context.lineTo(width, y);
+        }
+
+        context.stroke();
+
+    }
+
+    function roundToPlaces(value, places){
+        var mult = Math.pow(10, places);
+        return Math.round(value * mult) / mult;
+    }
+
+    function roundNearest(value, nearest){
+        return Math.round(value / nearest) * nearest;
+    }
 }
