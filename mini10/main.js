@@ -5,7 +5,7 @@ window.onload = function(){
     height = canvas.height = window.innerHeight,
     centerX = width/2,
     centerY = height/2;
-
+    // Todo: 
     function distanceXY(x0, y0, x1, y1){
         var dx = x1 - x0,
             dy = y1 - y0;
