@@ -8,7 +8,7 @@ window.onload = function(){
             y : height,
             angle: -Math.PI / 4
         },
-        cannonBall = particle.create(gun.x, gun.y, 15, gun.angle, 0.2),
+        cannonBall = particle_op.create(gun.x, gun.y, 15, gun.angle, 0.2),
         isShooting = false,
         forceSpeed = 0.1,
         forceAngle = 0,
@@ -20,7 +20,7 @@ window.onload = function(){
     update();
 
     function setTarget(){
-        target.x = utils.randomRange(20, width);
+        target.x = utils.randomRange(200, width);
         target.y = height;
         target.radius = utils.randomRange(10, 40);
     }
@@ -30,7 +30,6 @@ window.onload = function(){
     document.body.addEventListener("keydown", function(event){
         switch (event.keyCode) {
             case 32:
-                console.log(event.keyCode);
                 if (!isShooting){
                     shoot();
                 }
@@ -65,8 +64,8 @@ window.onload = function(){
     }
 
 	function shoot() {
-        var force = utils.map(rawForce, -1, 1, 2, 20);
-	    cannonBall.x = gun.x + Math.cos(gun.angle) * 40;
+		var force = utils.map(rawForce, -1, 1, 2, 20);
+		cannonBall.x = gun.x + Math.cos(gun.angle) * 40;
 		cannonBall.y = gun.y + Math.sin(gun.angle) * 40;
 		cannonBall.vx = Math.cos(gun.angle) * force;
 		cannonBall.vy = Math.sin(gun.angle) * force;
@@ -103,6 +102,8 @@ window.onload = function(){
         context.fillStyle = "#666";
         context.fillRect(10, height -10, 20, utils.map(rawForce, -1, 1, 0, -100));
 
+        context.fillStyle = "#000";
+
         context.beginPath();
         context.arc(gun.x, gun.y, 24, 0, Math.PI * 2, false);
         context.fill();
@@ -114,7 +115,10 @@ window.onload = function(){
         context.restore();
 
         context.beginPath();
-        context.arc(cannonBall.x, cannonBall.y, cannonBall.radius, 0, Math.PI * 2, false);
+        context.arc(cannonBall.x, 
+                    cannonBall.y, 
+                    cannonBall.radius, 
+                    0, Math.PI * 2, false);
         context.fill();
 
         context.fillStyle = "red";
