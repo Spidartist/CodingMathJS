@@ -15,7 +15,7 @@ window.onload = function(){
         rawForce = 0,
         target = {};
     cannonBall.radius = 7;
-    
+
     setTarget();
     update();
 
