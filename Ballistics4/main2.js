@@ -6,7 +6,8 @@ window.onload = function(){
         gun = {
             x : 100,
             y : height,
-            angle: -Math.PI / 4
+            angle: -Math.PI / 4,
+            radius: 24
         },
         cannonBall = particle_op.create(gun.x, gun.y, 15, gun.angle, 0.2),
         isShooting = false,
@@ -18,7 +19,8 @@ window.onload = function(){
         numParticles = 100,
         oldForce = 0;
         isTrung =false,
-        isSpace = false;
+        isSpace = false,
+        turnSpeed = 3;
     cannonBall.radius = 7;
 
     setTarget();
@@ -44,13 +46,19 @@ window.onload = function(){
     document.body.addEventListener("mousedown", onMouseDown);
 
     document.body.addEventListener("keydown", function(event){
+        console.log(event.keyCode);
         switch (event.keyCode) {
             case 32: // space
                 if (!isShooting){
                     isSpace = true;
                 }
                 break;
-        
+            case 39: // right
+                gun.x += turnSpeed;
+                break;
+            case 37: // left
+                gun.y -= turnSpeed;
+                break
             default:
                 break;
         }
@@ -79,7 +87,7 @@ window.onload = function(){
             checkTarget();
         }
         draw();
-        if (cannonBall.y > height){
+        if (cannonBall.y > height || cannonBall.x > width){
             isShooting = false;
         }
         requestAnimationFrame(update);
@@ -143,7 +151,7 @@ window.onload = function(){
         context.fillStyle = "#000";
 
         context.beginPath();
-        context.arc(gun.x, gun.y, 24, 0, Math.PI * 2, false);
+        context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
         context.fill();
         context.save();
         
@@ -154,7 +162,7 @@ window.onload = function(){
 
         context.beginPath();
         context.arc(cannonBall.x, 
-                    cannonBall.y, 
+                    cannonBall.y,
                     cannonBall.radius, 
                     0, Math.PI * 2, false);
         context.fill();
