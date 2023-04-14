@@ -20,6 +20,7 @@ window.onload = function(){
         oldForce = 0;
         isTrung =false,
         isSpace = false,
+        windForce = 0.0,
         turnSpeed = 3;
     cannonBall.radius = 7;
 
@@ -57,7 +58,7 @@ window.onload = function(){
                 gun.x += turnSpeed;
                 break;
             case 37: // left
-                gun.y -= turnSpeed;
+                gun.x -= turnSpeed;
                 break
             default:
                 break;
@@ -68,6 +69,7 @@ window.onload = function(){
         switch (event.keyCode) {
             case 32: // space
                 shoot();
+                windForce = utils.randomRange(-2.0, 2.0);
                 isSpace = false;
                 forceAngle = -Math.PI/2;
                 break;
@@ -84,6 +86,7 @@ window.onload = function(){
         rawForce = Math.sin(forceAngle);
         if (isShooting){
             cannonBall.update();
+            cannonBall.windUp(windForce);
             checkTarget();
         }
         draw();
@@ -134,10 +137,12 @@ window.onload = function(){
     function draw(){
         context.clearRect(0, 0, width, height);
 
+        context.font = "20px serif";
+        context.strokeText(`Wind ${windForce.toFixed(1)}`, 10, 20);
+
+
         context.fillStyle = "#ccc";
         context.fillRect(10, height -10, 20, -100);
-
-        
 
         context.fillStyle = "#666";
         context.fillRect(10, height -10, 20, utils.map(rawForce, -1, 1, 0, -100));

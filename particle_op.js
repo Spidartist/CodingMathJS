@@ -19,6 +19,10 @@ var particle_op = {
 		return obj;
 	},
 
+	windUp: function(windForce){
+		this.x += windForce;
+	},
+
 	accelerate: function(ax, ay) {
 		this.vx += ax;
 		this.vy += ay;
