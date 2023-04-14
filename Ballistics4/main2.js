@@ -148,6 +148,23 @@ window.onload = function(){
         context.fillStyle = "#666";
         context.fillRect(10, height -10, 20, utils.map(rawForce, -1, 1, 0, -100));
 
+        if (windForce >= 0){
+            context.beginPath();
+            context.moveTo(width/2, 40);
+            context.lineTo(width/2 + 60, 40);
+            context.lineTo(width/2 + 50, 30);
+            context.moveTo(width/2 + 60, 40);
+            context.lineTo(width/2 + 50, 50);
+            context.stroke();
+        }else{
+            context.beginPath();
+            context.moveTo(width/2 + 60, 40);
+            context.lineTo(width/2, 40);
+            context.lineTo(width/2 + 10, 30);
+            context.moveTo(width/2, 40);
+            context.lineTo(width/2 + 10, 50);
+            context.stroke();
+        }
 
         context.globalAlpha = 0.7;
         context.fillStyle = "#6cc";
