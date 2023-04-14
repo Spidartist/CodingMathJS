@@ -16,7 +16,6 @@ window.onload = function(){
         context.clearRect(0, 0, width, height);
 
         for (var i=0;i< numParticles;i++){
-            
             var p = particles[i];
             p.update();
             context.beginPath();

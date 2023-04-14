@@ -10,24 +10,25 @@ window.onload = function(){
         },
         cannonBall = particle_op.create(gun.x, gun.y, 15, gun.angle, 0.2),
         isShooting = false,
-        forceSpeed = 0.1,
-        forceAngle = 0,
+        forceSpeed = 0.05,
+        forceAngle = -Math.PI/2,
         rawForce = 0,
         target = {},
         particles = [],
         numParticles = 100,
-        isTrung =false;
+        oldForce = 0;
+        isTrung =false,
+        isSpace = false;
     cannonBall.radius = 7;
 
     setTarget();
-    // setFirework();
     update();
 
     function setFirework(){
         numParticles = 50;
         particles = [];
         for (var i=0; i<numParticles;i++){
-            var p = particle_op.create(width/2, height/2, Math.random()*5+1, Math.random()*Math.PI*2, 0.1);
+            var p = particle_op.create(target.x, target.y - target.radius, Math.random()*5+1, Math.random()*Math.PI*2, 0.1);
             p.radius = 1;
             particles.push(p);
         }
@@ -46,7 +47,7 @@ window.onload = function(){
         switch (event.keyCode) {
             case 32: // space
                 if (!isShooting){
-                    shoot();
+                    isSpace = true;
                 }
                 break;
         
@@ -58,9 +59,9 @@ window.onload = function(){
     document.body.addEventListener("keyup", function(event){
         switch (event.keyCode) {
             case 32: // space
-                if (isShooting){
-                    shoot();
-                }
+                shoot();
+                isSpace = false;
+                forceAngle = -Math.PI/2;
                 break;
         
             default:
@@ -69,7 +70,7 @@ window.onload = function(){
     })
 
     function update(){
-        if (!isShooting){
+        if (!isShooting && isSpace){
             forceAngle += forceSpeed;
         }
         rawForce = Math.sin(forceAngle);
@@ -98,7 +99,7 @@ window.onload = function(){
 		cannonBall.y = gun.y + Math.sin(gun.angle) * 40;
 		cannonBall.vx = Math.cos(gun.angle) * force;
 		cannonBall.vy = Math.sin(gun.angle) * force;
-
+        oldForce = rawForce;
 		isShooting = true;
 	}
 
@@ -128,8 +129,16 @@ window.onload = function(){
         context.fillStyle = "#ccc";
         context.fillRect(10, height -10, 20, -100);
 
+        
+
         context.fillStyle = "#666";
         context.fillRect(10, height -10, 20, utils.map(rawForce, -1, 1, 0, -100));
+
+
+        context.globalAlpha = 0.7;
+        context.fillStyle = "#6cc";
+        context.fillRect(10, height -10, 20, utils.map(oldForce, -1, 1, 0, -100));
+        context.globalAlpha = 1;
 
         context.fillStyle = "#000";
 
