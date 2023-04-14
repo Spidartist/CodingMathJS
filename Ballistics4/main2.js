@@ -38,7 +38,6 @@ window.onload = function(){
     }
 
     function setTarget(){
-        // isTrung = false;
         target.x = utils.randomRange(200, width);
         target.y = height;
         target.radius = utils.randomRange(10, 40);
@@ -69,7 +68,6 @@ window.onload = function(){
         switch (event.keyCode) {
             case 32: // space
                 shoot();
-                windForce = utils.randomRange(-2.0, 2.0);
                 isSpace = false;
                 forceAngle = -Math.PI/2;
                 break;
@@ -92,6 +90,9 @@ window.onload = function(){
         draw();
         if (cannonBall.y > height || cannonBall.x > width){
             isShooting = false;
+            windForce = utils.randomRange(-2.0, 2.0);
+            cannonBall.x = -10;
+            cannonBall.y = -10;
         }
         requestAnimationFrame(update);
     }
@@ -138,7 +139,7 @@ window.onload = function(){
         context.clearRect(0, 0, width, height);
 
         context.font = "20px serif";
-        context.strokeText(`Wind ${windForce.toFixed(1)}`, 10, 20);
+        context.strokeText(`Wind ${windForce.toFixed(1)}`, width/2, 20);
 
 
         context.fillStyle = "#ccc";
