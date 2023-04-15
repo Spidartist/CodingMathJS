@@ -11,7 +11,7 @@ window.onload = function(){
         },
         cannonBall = particle_op.create(gun.x, gun.y, 15, gun.angle, 0.2),
         isShooting = false,
-        forceSpeed = 0.05,
+        forceSpeed = 0.02,
         forceAngle = -Math.PI/2,
         rawForce = 0,
         target = {},
@@ -67,7 +67,9 @@ window.onload = function(){
     document.body.addEventListener("keyup", function(event){
         switch (event.keyCode) {
             case 32: // space
-                shoot();
+                if (isSpace){
+                    shoot();
+                }
                 isSpace = false;
                 forceAngle = -Math.PI/2;
                 break;
@@ -143,10 +145,10 @@ window.onload = function(){
 
 
         context.fillStyle = "#ccc";
-        context.fillRect(10, height -10, 20, -100);
+        context.fillRect(10, height - 10, 30, -200);
 
         context.fillStyle = "#666";
-        context.fillRect(10, height -10, 20, utils.map(rawForce, -1, 1, 0, -100));
+        context.fillRect(10, height - 10, 30, utils.map(rawForce, -1, 1, 0, -200));
 
         if (windForce >= 0){
             context.beginPath();
@@ -168,7 +170,7 @@ window.onload = function(){
 
         context.globalAlpha = 0.7;
         context.fillStyle = "#6cc";
-        context.fillRect(10, height -10, 20, utils.map(oldForce, -1, 1, 0, -100));
+        context.fillRect(10, height -10, 30, utils.map(oldForce, -1, 1, 0, -200));
         context.globalAlpha = 1;
 
         context.fillStyle = "#000";
