@@ -39,7 +39,8 @@ window.onload = function(){
 
     function setTarget(){
         target.x = utils.randomRange(200, width);
-        target.y = height;
+        // target.y = height;
+        target.y = utils.randomRange(200, height);
         target.radius = utils.randomRange(10, 40);
     }
 
@@ -103,7 +104,7 @@ window.onload = function(){
         if (utils.circleCollision(target, cannonBall)){
             isTrung = true;
             setFirework();
-            setTarget();
+            setTarget();            
         }
     }
 
@@ -143,6 +144,9 @@ window.onload = function(){
         context.font = "20px serif";
         context.strokeText(`Wind ${windForce.toFixed(1)}`, width/2, 20);
 
+        if (!isShooting){
+            context.strokeText("Bantumlum di!!!", width/2 - 40, 100);
+        }
 
         context.fillStyle = "#ccc";
         context.fillRect(10, height - 10, 30, -200);
@@ -174,7 +178,6 @@ window.onload = function(){
         context.globalAlpha = 1;
 
         context.fillStyle = "#000";
-
         context.beginPath();
         context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
         context.fill();
