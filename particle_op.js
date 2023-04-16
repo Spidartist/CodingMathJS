@@ -8,6 +8,7 @@ var particle_op = {
 	bounce: -1,
 	friction: 1,
 	gravity: 0,
+	health: 0,
 
 	create: function(x, y, speed, direction, grav) {
 		var obj = Object.create(this);
