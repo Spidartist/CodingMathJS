@@ -163,10 +163,10 @@ window.onload = function(){
         context.fillRect(10, height - 10, 30, utils.map(rawForce, -1, 1, 0, -200));
 
         context.fillStyle = "#ccc";
-        context.fillRect(target.x - 10, target.y - 20 - target.radius, targetHealth, 10);
+        context.fillRect(target.x - targetHealth/2, target.y - 20 - target.radius, targetHealth, 10);
 
         context.fillStyle = "#666";
-        context.fillRect(target.x - 10, target.y - 20 - target.radius, utils.map(target.health, 0, 100, 0, -100), 10);
+        context.fillRect(target.x - targetHealth/2, target.y - 20 - target.radius, utils.map(target.health, 0, 100, 0, 100), 10);
 
         if (windForce >= 0){
             context.beginPath();
