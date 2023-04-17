@@ -9,7 +9,7 @@ window.onload = function(){
     function update(){
         context.clearRect(0, 0, width, height);
 
-        //
+        
 
         requestAnimationFrame(update);
     }
