@@ -1,18 +1,19 @@
 window.onload = function(){
     var canvas = document.getElementById("canvas"),
-    context = canvas.getContext("2d"),
-    width = canvas.width = window.innerWidth,
-    height = canvas.height = window.innerHeight,
-    points = [],
-    numPoints = 6,
-    rectBoundary = {
-        x: 200,
-        y: 200,
-        width: 400,
-        height: 400
-    },
-    k = 0.01,
-    grav = 0.2;
+        context = canvas.getContext("2d"),
+        width = canvas.width = window.innerWidth,
+        height = canvas.height = window.innerHeight,
+        points = [],
+        originalPoints = [],
+        numPoints = 6,
+        rectBoundary = {
+            x: 200,
+            y: 200,
+            width: 400,
+            height: 400
+        },
+        k = 0.01,
+        grav = 0.0;
 
     setup();
     update();
@@ -31,47 +32,41 @@ window.onload = function(){
         points.push(p);
         p = particle.create(495, 279, 0, 0, grav);
         points.push(p);
-    }
-    function calDist(p0, p1){
-        var dx = p0.x - p1.x,
-            dy = p0.y - p1.y;
-        return Math.sqrt(dx*dx + dy*dy);
+        originalPoints = points;
+        console.log(1);
     }
 
-    function spring(p0, p1){
-        var dx = p0.x - p1.x,
-            dy = p0.y - p1.y;
-        var dist = vector.create(dx, dy);
-        dist.setLength(dist.getLength() - 20);
-        var springForce = dist.multiply(k);
+    function spring(p0, p1, separation){
+        var distance = p0.position.subtract(p1.position);
+        distance.setLength(distance.getLength() - separation);
+        
+        var springForce = distance.multiply(k);
+        p1.velocity.addTo(springForce);
+        p0.velocity.subtractFrom(springForce);
 
-        p1.dx += springForce.getX();
-        p1.dy += springForce.getY();
-        p0.dx -= springForce.getX();
-        p0.dy -= springForce.getY();
     }
 
     document.body.addEventListener("mousemove", function(event){
-        points[0].x = event.clientX;
-        points[0].y = event.clientY;
+        points[0].position.setX(event.clientX);
+        points[0].position.setY(event.clientY);
     })
 
     function checkEdges(p){
-        if (p.x > rectBoundary.x + rectBoundary.width){
-            p.x = rectBoundary.x + rectBoundary.width;
-            p.dx = p.dx * -1;
+        if (p.position.getX() > rectBoundary.x + rectBoundary.width){
+            p.position.setX(rectBoundary.x + rectBoundary.width);
+            p.velocity.setX(p.velocity.getX() * -1);
         }
-        if (p.x < rectBoundary.x){
-            p.x = rectBoundary.x
-            p.dx = p.dx * -1;
+        if (p.position.getX() < rectBoundary.x){
+            p.position.setX(rectBoundary.x);
+            p.velocity.setX(p.velocity.getX() * -1);
         }
-        if (p.y > rectBoundary.y + rectBoundary.height){
-            p.y = rectBoundary.y + rectBoundary.height;
-            p.dy = p.dy * -1;
+        if (p.position.getY() > rectBoundary.y + rectBoundary.height){
+            p.position.setY(rectBoundary.y + rectBoundary.height);
+            p.velocity.setY(p.velocity.getY() * -1);
         }
-        if (p.y < rectBoundary.y){
-            p.y = rectBoundary.y
-            p.dy = p.dy * -1;
+        if (p.position.getY() < rectBoundary.y){
+            p.position.setY(rectBoundary.y);
+            p.velocity.setY(p.velocity.getY() * -1);
         }
     }
 
@@ -81,11 +76,12 @@ window.onload = function(){
         context.strokeRect(rectBoundary.x, rectBoundary.y, rectBoundary.width, rectBoundary.height);
 
         for (var i=0;i<numPoints;i++){
-            spring(points[i], points[(i+1)%numPoints]);
+            spring(points[i], points[(i+1)%numPoints], originalPoints[i].position.subtract(originalPoints[(i+1)%numPoints].position).getLength());
         }
-        spring(points[1], points[4]);
-        spring(points[0], points[3]);
-        spring(points[2], points[5]);
+        spring(points[1], points[4], originalPoints[1].position.subtract(originalPoints[4].position).getLength());
+        spring(points[0], points[3], originalPoints[0].position.subtract(originalPoints[3].position).getLength());
+        console.log(originalPoints[0].position);
+        spring(points[2], points[5], originalPoints[2].position.subtract(originalPoints[5].position).getLength());
 
         for (var i=0;i<numPoints;i++){
             checkEdges(points[i]);
@@ -97,21 +93,21 @@ window.onload = function(){
 
         for (var i=0;i<numPoints;i++){
             context.beginPath();
-            context.arc(points[i].x, points[i].y, 5, 0, Math.PI * 2, false);
+            context.arc(points[i].position.getX(), points[i].position.getY(), 5, 0, Math.PI * 2, false);
             context.fill();
         }
 
         for (var i=0;i<numPoints;i++){
             context.beginPath();
-            context.moveTo(points[i].x, points[i].y)
-            context.lineTo(points[(i+1)%numPoints].x, points[(i+1)%numPoints].y);
+            context.moveTo(points[i].position.getX(), points[i].position.getY());
+            context.lineTo(points[(i+1)%numPoints].position.getX(), points[(i+1)%numPoints].position.getY());
             context.stroke();
         }
 
         for (var i=0;i<=2;i++){
             context.beginPath();
-            context.moveTo(points[i].x, points[i].y)
-            context.lineTo(points[i+3].x, points[i+3].y);
+            context.moveTo(points[i].position.getX(), points[i].position.getY())
+            context.lineTo(points[i+3].position.getX(), points[i+3].position.getY());
             context.stroke();
         }
 
