@@ -168,6 +168,8 @@ window.onload = function(){
         context.fillStyle = "#666";
         context.fillRect(target.x - targetHealth/2, target.y - 20 - target.radius, utils.map(target.health, 0, 100, 0, 100), 10);
 
+        // Todo: add spring
+
         if (windForce >= 0){
             context.beginPath();
             context.moveTo(width/2, 40);
