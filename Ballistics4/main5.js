@@ -95,23 +95,25 @@ window.onload = function(){
     })
 
     function update(){
-        if (!isShooting && isSpace){
-            forceAngle += forceSpeed;
-        }
-        rawForce = Math.sin(forceAngle);
-        if (isShooting){
-            cannonBall.update();
-            cannonBall.windUp(windForce);
-            checkTarget();
-        }
-        draw();
-        if (cannonBall.y > height || cannonBall.x > width){
-            isShooting = false;
-            windForce = utils.randomRange(-2.0, 2.0);
-            cannonBall.x = -10;
-            cannonBall.y = -10;
-        }
-        requestAnimationFrame(update);
+        if (gun.health > 0 && gun_1.health>0){
+            if (!isShooting && isSpace){
+                forceAngle += forceSpeed;
+            }
+            rawForce = Math.sin(forceAngle);
+            if (isShooting){
+                cannonBall.update();
+                cannonBall.windUp(windForce);
+                checkTarget();
+            }
+            draw();
+            if (cannonBall.y > height || cannonBall.x > width){
+                isShooting = false;
+                windForce = utils.randomRange(-2.0, 2.0);
+                cannonBall.x = -10;
+                cannonBall.y = -10;
+            }
+            requestAnimationFrame(update);
+        } 
     }
 
     function checkTarget(){
@@ -253,25 +255,30 @@ window.onload = function(){
         // }
 
         context.globalAlpha = 1;
-        context.fillStyle = "#000";
-        context.beginPath();
-        context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
-        context.fill();
-        context.save();
-        context.translate(gun.x, gun.y);
-        context.rotate(gun.angle);
-        context.fillRect(0, -8, 40, 16);
-        context.restore();
 
-        context.fillStyle = "green";
-        context.beginPath();
-        context.arc(gun_1.x, gun_1.y, gun_1.radius, 0, Math.PI * 2, false);
-        context.fill();
-        context.save();
-        context.translate(gun_1.x, gun_1.y);
-        context.rotate(gun_1.angle);
-        context.fillRect(0, -8, 40, 16);
-        context.restore();
+        if (gun.health > 0){
+            context.fillStyle = "#000";
+            context.beginPath();
+            context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
+            context.fill();
+            context.save();
+            context.translate(gun.x, gun.y);
+            context.rotate(gun.angle);
+            context.fillRect(0, -8, 40, 16);
+            context.restore();
+        }
+
+        if (gun_1.health > 0){
+            context.fillStyle = "green";
+            context.beginPath();
+            context.arc(gun_1.x, gun_1.y, gun_1.radius, 0, Math.PI * 2, false);
+            context.fill();
+            context.save();
+            context.translate(gun_1.x, gun_1.y);
+            context.rotate(gun_1.angle);
+            context.fillRect(0, -8, 40, 16);
+            context.restore();
+        }
 
         
         if (!numTurn){
