@@ -28,7 +28,7 @@ window.onload = function(){
 
     function setup(){
         var p;
-        p = particle.create(200, 100, 1, 0, grav);
+        p = particle.create(200, 100, 0, 0, grav);
         p.friction = 0.9;
         points.push(p);
         p = particle.create(400, 100, 0, 0, grav);
@@ -57,7 +57,7 @@ window.onload = function(){
         originalPoints.push(calDist(points[0], points[4]));
     }
 
-    function spring(p0, p1, separation){
+    function spring(p0, p1, separation, k){
         var distance = p0.position.subtract(p1.position);
         distance.setLength(distance.getLength() - separation);
         
@@ -96,7 +96,6 @@ window.onload = function(){
     // })
 
     document.body.addEventListener("keydown", function(event){
-        console.log(event.keyCode);
         if (event.keyCode == 32){
             if (isFill){
                 isFill = false;
@@ -146,13 +145,13 @@ window.onload = function(){
         // context.strokeRect(rectBoundary.x, rectBoundary.y, rectBoundary.width, rectBoundary.height);
 
         for (var i=0;i<numPoints;i++){
-            spring(points[i], points[(i+1)%numPoints], originalPoints[i]);
+            spring(points[i], points[(i+1)%numPoints], originalPoints[i], k);
         }
-        spring(points[0], points[3], originalPoints[6]);
-        spring(points[1], points[4], originalPoints[7]);
-        spring(points[2], points[5], originalPoints[8]);
-        spring(points[1], points[3], originalPoints[9]);
-        spring(points[0], points[4], originalPoints[10]);
+        spring(points[0], points[3], originalPoints[6], k);
+        spring(points[1], points[4], originalPoints[7], k);
+        spring(points[2], points[5], originalPoints[8], 0.5);
+        // spring(points[1], points[3], originalPoints[9], 0.5);
+        // spring(points[0], points[4], originalPoints[10], 0.5);
 
         for (var i=0;i<numPoints;i++){
             points[i].update();
@@ -166,6 +165,7 @@ window.onload = function(){
 
 
         if (isFill){
+            context.globalAlpha = 0.2;
             context.beginPath();
             context.moveTo(points[0].position.getX(), points[0].position.getY());
             context.lineTo(points[1].position.getX(), points[1].position.getY());
@@ -174,6 +174,7 @@ window.onload = function(){
             context.lineTo(points[4].position.getX(), points[4].position.getY());
             context.lineTo(points[5].position.getX(), points[5].position.getY());
             context.fill();
+            context.globalAlpha = 1;
         }else{
             for (var i=0;i<numPoints;i++){
                 context.beginPath();

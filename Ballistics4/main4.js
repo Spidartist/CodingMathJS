@@ -55,7 +55,7 @@ window.onload = function(){
     }
 
     document.body.addEventListener("keydown", function(event){
-        console.log(event.keyCode);
+        // console.log(event.keyCode);
         switch (event.keyCode) {
             case 32: // space
                 if (!isShooting){
@@ -170,7 +170,11 @@ window.onload = function(){
     }
 
     function aimGun(mouseX, mouseY) {
-		gun.angle = utils.clamp(Math.atan2(mouseY - gun.y, mouseX - gun.x), -Math.PI / 2, -0.3);
+        if (numTurn){
+            gun.angle = utils.clamp(Math.atan2(mouseY - gun.y, mouseX - gun.x), -Math.PI / 2, -0.3)
+        }else{
+            gun_1.angle = utils.clamp(Math.atan2(mouseY - gun_1.y, mouseX - gun_1.x), -Math.PI / 2, 0.3 - Math.PI);
+        }
 	}
 
     function draw(){
@@ -226,30 +230,53 @@ window.onload = function(){
         context.globalAlpha = 1;
 
         context.fillStyle = "#000";
-        if (numTurn){
-            context.globalAlpha = 1;
+        // if (numTurn){
+        //     context.globalAlpha = 1;
+        //     context.fillStyle = "#000";
+        //     context.beginPath();
+        //     context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
+        //     context.fill();
+        //     context.save();
+        //     context.translate(gun.x, gun.y);
+        //     context.rotate(gun.angle);
+        //     context.fillRect(0, -8, 40, 16);
+        //     context.restore();
+        // }else{
+        //     context.beginPath();
+        //     context.arc(gun_1.x, gun_1.y, gun_1.radius, 0, Math.PI * 2, false);
+        //     context.fill();
+        //     context.save();
+        //     context.translate(gun_1.x, gun_1.y);
+        //     context.rotate(gun_1.angle);
+        //     context.fillRect(0, -8, 40, 16);
+        //     context.restore();
+        // }
+
+        context.globalAlpha = 1;
+        context.fillStyle = "#000";
+        context.beginPath();
+        context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
+        context.fill();
+        context.save();
+        context.translate(gun.x, gun.y);
+        context.rotate(gun.angle);
+        context.fillRect(0, -8, 40, 16);
+        context.restore();
+
+        context.fillStyle = "green";
+        context.beginPath();
+        context.arc(gun_1.x, gun_1.y, gun_1.radius, 0, Math.PI * 2, false);
+        context.fill();
+        context.save();
+        context.translate(gun_1.x, gun_1.y);
+        context.rotate(gun_1.angle);
+        context.fillRect(0, -8, 40, 16);
+        context.restore();
+
+        
+        if (!numTurn){
             context.fillStyle = "#000";
-            context.beginPath();
-            context.arc(gun.x, gun.y, gun.radius, 0, Math.PI * 2, false);
-            context.fill();
-            context.save();
-            context.translate(gun.x, gun.y);
-            context.rotate(gun.angle);
-            context.fillRect(0, -8, 40, 16);
-            context.restore();
-        }else{
-            context.beginPath();
-            context.arc(gun_1.x, gun_1.y, gun_1.radius, 0, Math.PI * 2, false);
-            context.fill();
-            context.save();
-            context.translate(gun_1.x, gun_1.y);
-            context.rotate(gun_1.angle);
-            context.fillRect(0, -8, 40, 16);
-            context.restore();
         }
-        
-        
-        
         // Cannonball
         context.beginPath();
         context.arc(cannonBall.x, 
