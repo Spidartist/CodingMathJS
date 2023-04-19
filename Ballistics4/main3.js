@@ -47,8 +47,6 @@ window.onload = function(){
         target.radius = utils.randomRange(10, 40);
     }
 
-    document.body.addEventListener("mousedown", onMouseDown);
-
     document.body.addEventListener("keydown", function(event){
         console.log(event.keyCode);
         switch (event.keyCode) {
@@ -126,6 +124,8 @@ window.onload = function(){
 		isShooting = true;
 	}
 
+    document.body.addEventListener("mousedown", onMouseDown);
+    
     function onMouseDown(event){
         document.body.addEventListener("mousemove", onMouseMove);
         document.body.addEventListener("mouseup", onMouseUp);

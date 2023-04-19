@@ -6,34 +6,55 @@ window.onload = function(){
         points = [],
         originalPoints = [],
         numPoints = 6,
-        rectBoundary = {
-            x: 200,
-            y: 200,
-            width: 400,
-            height: 400
-        },
-        k = 0.01,
-        grav = 0.0;
+        // rectBoundary = {
+        //     x: 200,
+        //     y: 200,
+        //     width: 400,
+        //     height: 400
+        // },
+        k = 0.4,
+        rectObj = {};
+        isFill = true,
+        grav = 1;
 
     setup();
     update();
+    
+    function calDist(p0, p1){
+        var dx = p0.position.getX() - p1.position.getX(),
+            dy = p0.position.getY() - p1.position.getY();
+        return Math.sqrt(dx*dx + dy*dy);
+    }
 
     function setup(){
         var p;
-        p = particle.create(295, 279, 0, 0, grav);
+        p = particle.create(200, 100, 1, 0, grav);
+        p.friction = 0.9;
         points.push(p);
-        p = particle.create(295 + 50, 279 + 100, 0, 0, grav);
+        p = particle.create(400, 100, 0, 0, grav);
+        p.friction = 0.9;
         points.push(p);
-        p = particle.create(295, 479, 0, 0, grav);
+        p = particle.create(350, 200, 0, 0, grav);
+        p.friction = 0.9;
         points.push(p);
-        p = particle.create(495, 479, 0, 0, grav);
+        p = particle.create(400, 300, 0, 0, grav);
+        p.friction = 0.9;
         points.push(p);
-        p = particle.create(495 - 50, 279 + 100, 0, 0, grav);
+        p = particle.create(200, 300, 0, 0, grav);
+        p.friction = 0.9;
         points.push(p);
-        p = particle.create(495, 279, 0, 0, grav);
+        p = particle.create(250, 200, 0, 0, grav);
+        p.friction = 0.9;
         points.push(p);
-        originalPoints = points;
-        console.log(1);
+        for (var i = 0; i<numPoints;i++){
+            originalPoints.push(calDist(points[i], points[(i+1)%numPoints]));
+        }
+
+        for (var i=0;i<=2;i++){
+            originalPoints.push(calDist(points[i], points[i+3]));
+        }
+        originalPoints.push(calDist(points[1], points[3]));
+        originalPoints.push(calDist(points[0], points[4]));
     }
 
     function spring(p0, p1, separation){
@@ -46,70 +67,146 @@ window.onload = function(){
 
     }
 
-    document.body.addEventListener("mousemove", function(event){
+    function changePos(event){
         points[0].position.setX(event.clientX);
         points[0].position.setY(event.clientY);
+    }
+    
+    document.body.addEventListener("mousedown", onMouseDown);
+    
+    function onMouseDown(event){
+        document.body.addEventListener("mousemove", onMouseMove);
+        document.body.addEventListener("mouseup", onMouseUp);
+        changePos(event);
+    }
+
+    function onMouseMove(event){
+        changePos(event);
+    }
+
+    function onMouseUp(event){
+        document.body.removeEventListener("mousemove", onMouseMove);
+        document.body.removeEventListener("mouseup", onMouseUp);
+        changePos(event);
+    }
+
+    // document.body.addEventListener("mousedown", function(event){
+    //     points[0].position.setX(event.clientX);
+    //     points[0].position.setY(event.clientY);
+    // })
+
+    document.body.addEventListener("keydown", function(event){
+        console.log(event.keyCode);
+        if (event.keyCode == 32){
+            if (isFill){
+                isFill = false;
+            }else{
+                isFill = true;
+            }
+        }
     })
 
+    // function checkEdges(p){
+    //     if (p.position.getX() > rectBoundary.x + rectBoundary.width){
+    //         p.position.setX(rectBoundary.x + rectBoundary.width);
+    //         // p.velocity.setX(p.velocity.getX() * -0.8);
+    //     }
+    //     if (p.position.getX() < rectBoundary.x){
+    //         p.position.setX(rectBoundary.x);
+    //         // p.velocity.setX(p.velocity.getX() * -0.8);
+    //     }
+    //     if (p.position.getY() > rectBoundary.y + rectBoundary.height){
+    //         p.position.setY(rectBoundary.y + rectBoundary.height);
+    //         // p.velocity.setY(p.velocity.getY() * -0.8);
+    //     }
+    //     if (p.position.getY() < rectBoundary.y){
+    //         p.position.setY(rectBoundary.y);
+    //         // p.velocity.setY(p.velocity.getY() * -0.8);
+    //     }
+    // }
+
     function checkEdges(p){
-        if (p.position.getX() > rectBoundary.x + rectBoundary.width){
-            p.position.setX(rectBoundary.x + rectBoundary.width);
-            p.velocity.setX(p.velocity.getX() * -1);
+        if (p.position.getX() > width){
+            p.position.setX(width);
         }
-        if (p.position.getX() < rectBoundary.x){
-            p.position.setX(rectBoundary.x);
-            p.velocity.setX(p.velocity.getX() * -1);
+        if (p.position.getX() < 0){
+            p.position.setX(0);
         }
-        if (p.position.getY() > rectBoundary.y + rectBoundary.height){
-            p.position.setY(rectBoundary.y + rectBoundary.height);
-            p.velocity.setY(p.velocity.getY() * -1);
+        if (p.position.getY() > height){
+            p.position.setY(height);
         }
-        if (p.position.getY() < rectBoundary.y){
-            p.position.setY(rectBoundary.y);
-            p.velocity.setY(p.velocity.getY() * -1);
+        if (p.position.getY() < 0){
+            p.position.setY(0);
         }
     }
 
     function update(){
         context.clearRect(0, 0, width, height);
         context.beginPath();
-        context.strokeRect(rectBoundary.x, rectBoundary.y, rectBoundary.width, rectBoundary.height);
+        // context.strokeRect(rectBoundary.x, rectBoundary.y, rectBoundary.width, rectBoundary.height);
 
         for (var i=0;i<numPoints;i++){
-            spring(points[i], points[(i+1)%numPoints], originalPoints[i].position.subtract(originalPoints[(i+1)%numPoints].position).getLength());
+            spring(points[i], points[(i+1)%numPoints], originalPoints[i]);
         }
-        spring(points[1], points[4], originalPoints[1].position.subtract(originalPoints[4].position).getLength());
-        spring(points[0], points[3], originalPoints[0].position.subtract(originalPoints[3].position).getLength());
-        console.log(originalPoints[0].position);
-        spring(points[2], points[5], originalPoints[2].position.subtract(originalPoints[5].position).getLength());
-
-        for (var i=0;i<numPoints;i++){
-            checkEdges(points[i]);
-        }
+        spring(points[0], points[3], originalPoints[6]);
+        spring(points[1], points[4], originalPoints[7]);
+        spring(points[2], points[5], originalPoints[8]);
+        spring(points[1], points[3], originalPoints[9]);
+        spring(points[0], points[4], originalPoints[10]);
 
         for (var i=0;i<numPoints;i++){
             points[i].update();
         }
-
         for (var i=0;i<numPoints;i++){
+            checkEdges(points[i]);
+        }
+
+
+        
+
+
+        if (isFill){
             context.beginPath();
-            context.arc(points[i].position.getX(), points[i].position.getY(), 5, 0, Math.PI * 2, false);
+            context.moveTo(points[0].position.getX(), points[0].position.getY());
+            context.lineTo(points[1].position.getX(), points[1].position.getY());
+            context.lineTo(points[2].position.getX(), points[2].position.getY());
+            context.lineTo(points[3].position.getX(), points[3].position.getY());
+            context.lineTo(points[4].position.getX(), points[4].position.getY());
+            context.lineTo(points[5].position.getX(), points[5].position.getY());
             context.fill();
-        }
-
-        for (var i=0;i<numPoints;i++){
+        }else{
+            for (var i=0;i<numPoints;i++){
+                context.beginPath();
+                context.arc(points[i].position.getX(), points[i].position.getY(), 5, 0, Math.PI * 2, false);
+                context.fill();
+            }
+    
+            for (var i=0;i<numPoints;i++){
+                context.beginPath();
+                context.moveTo(points[i].position.getX(), points[i].position.getY());
+                context.lineTo(points[(i+1)%numPoints].position.getX(), points[(i+1)%numPoints].position.getY());
+                context.stroke();
+            }
+    
+            for (var i=0;i<=2;i++){
+                context.beginPath();
+                context.moveTo(points[i].position.getX(), points[i].position.getY())
+                context.lineTo(points[i+3].position.getX(), points[i+3].position.getY());
+                context.stroke();
+            }
+    
             context.beginPath();
-            context.moveTo(points[i].position.getX(), points[i].position.getY());
-            context.lineTo(points[(i+1)%numPoints].position.getX(), points[(i+1)%numPoints].position.getY());
+            context.moveTo(points[0].position.getX(), points[0].position.getY())
+            context.lineTo(points[4].position.getX(), points[4].position.getY());
+            context.stroke();
+    
+            context.beginPath();
+            context.moveTo(points[1].position.getX(), points[1].position.getY())
+            context.lineTo(points[3].position.getX(), points[3].position.getY());
             context.stroke();
         }
 
-        for (var i=0;i<=2;i++){
-            context.beginPath();
-            context.moveTo(points[i].position.getX(), points[i].position.getY())
-            context.lineTo(points[i+3].position.getX(), points[i+3].position.getY());
-            context.stroke();
-        }
+        
 
         requestAnimationFrame(update);
     }
