@@ -112,8 +112,8 @@ window.onload = function(){
                 cannonBall.x = -10;
                 cannonBall.y = -10;
             }
-            requestAnimationFrame(update);
         } 
+        requestAnimationFrame(update);
     }
 
     function checkTarget(){
@@ -168,9 +168,9 @@ window.onload = function(){
 
     function aimGun(mouseX, mouseY) {
         if (numTurn){
-            gun.angle = utils.clamp(Math.atan2(mouseY - gun.y, mouseX - gun.x), -Math.PI / 2, -0.3)
+            gun.angle = utils.clamp(Math.atan2(mouseY - gun.y, mouseX - gun.x), 0.3 - Math.PI, -0.3)
         }else{
-            gun_1.angle = utils.clamp(Math.atan2(mouseY - gun_1.y, mouseX - gun_1.x), -Math.PI / 2, 0.3 - Math.PI);
+            gun_1.angle = utils.clamp(Math.atan2(mouseY - gun_1.y, mouseX - gun_1.x), -0.3, 0.3 - Math.PI);
         }
 	}
 
