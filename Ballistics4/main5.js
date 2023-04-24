@@ -35,6 +35,10 @@ window.onload = function(){
         target= {};
     cannonBall.radius = 7;
 
+    // Todo: Add more force bar
+        //   Add ground
+        //   Add destruction effect
+        //   Add the luc
     update();
 
     function setFirework(){
