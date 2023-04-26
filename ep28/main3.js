@@ -8,8 +8,8 @@ window.onload = function(){
         y: Math.random() * height
     },
     points = [],
-    numPoints = 1000,
-    ease = 0.5;
+    numPoints = 100,
+    ease = 0.2;
 
     for (var i = 0;i<numPoints;i++){
         points.push({
