@@ -8,7 +8,7 @@ window.onload = function(){
         y: Math.random() * height
     },
     points = [],
-    numPoints = 30,
+    numPoints = 100,
     ease = 0.4;
 
     for (var i = 0;i<numPoints;i++){
